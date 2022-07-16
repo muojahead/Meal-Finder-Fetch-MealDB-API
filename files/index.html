@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="all.min.css">
+  <title>Meal Finder Fetch & MealDB API</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Meal finder</h1>
+    <div class="flex">
+      <form class="flex" id="submit">
+        <input type="text" id="search"placeholder='search for meals or key word'>
+        <button type="submit" class="search-btn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        </form>
+        <button class="random-btn" id="random">
+          <i class="fas fa-random"></i>
+        </button>
+    </div>
+    <div id="result-heading"></div>
+    <div id="meals" class="meals"></div>
+    <div id="single-meals"></div>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>
