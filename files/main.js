@@ -1,50 +1,48 @@
-let search=document.getElementById('search');
-let submit=document.getElementById('submit');
-let random=document.getElementById('random');
-let mealsEl=document.getElementById('meals');
-let resulHeading=document.getElementById('result-heading');
-let singleMealEl=document.getElementById('single-meals');
+let search = document.getElementById('search');
+let submit = document.getElementById('submit');
+let random = document.getElementById('random');
+let mealsEl = document.getElementById('meals');
+let resulHeading = document.getElementById('result-heading');
+let singleMealEl = document.getElementById('single-meals');
 
 
 // search meal and fetch from API
-function searchMeal(e){
+function searchMeal(e) {
   e.preventDefault();
-  // clear single meal
-  singleMealEl.innerHTML='';
-
-  // Get search term
+  singleMealEl.innerHTML = '';
   let term = search.value;
-  // check for empty
-  if(term.trim()){
+  if (term.trim()) {
     fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${term}`)
-      .then(res => res.json())
+      .then(res => {
+        return res.json()
+      })
       .then(data => {
-        console.log(data)
-        resulHeading.innerHTML=`<h2>Search reslts for ${term}:</h2>`;
-        if(data.meals === null){
-          resulHeading.innerHTML=`<p>There ar-e not search results.try agin.</p>`;
-        }else{
-          mealsEl.innerHTML = data.meals
-          .map(
-            meal => `
-          <div class="meal">
-            <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
-            <div class="meal-info" data-mealID="${meal.idMeal}">
-              <h3>${meal.strMeal}</h3>
-            </div>
-          </div>
-            `
-              )
-                .json('');
+        resulHeading.innerHTML = `<h2>Search reslts for ${term}:</h2>`;
+        if (data.meals === null || data.meals.length == 0) {
+          resulHeading.innerHTML = `<p>There are no search results</p>`;
+        } else {
+          const newData = data.meals;
+          mealsEl.innerHTML = ''
+          for (let index = 0; index < newData.length; index++) {
+            const meal = newData[index];
+            mealsEl.innerHTML += `
+                 <div class="meal">
+                 <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+                 <div class="meal-info" data-mealID="${meal.idMeal}">
+                 <h3>${meal.strMeal}</h3>
+                 </div>
+                 </div>
+                 `
           }
-        });
-        console.log('data');
-    search.value='';
-  }else{
+        }
+      }).catch(err => {
+        mealsEl.innerHTML = err;
+      })
+  } else {
     alert('enter a search');
   }
 
 }
 
 // event  listeners
-submit.addEventListener('submit',searchMeal);
+search.addEventListener('input', searchMeal);
